@@ -7,6 +7,9 @@
 #include "WProgram.h"
 #endif
 
+/// <summary>
+/// Provides methods for interfacing with a 2-axis joystick and an optional button.
+/// </summary>
 class Joystick
 {
 public:
@@ -17,22 +20,53 @@ public:
 	typedef float precision_t;
 #endif
 
+	/// <param name="x">Pin of the x-axis.</param>
+	/// <param name="x">Pin of the y-axis.</param>
 	inline Joystick(const byte x, const byte y) :
 		_x(x), _y(y), _btn(0xff), _latched(false) {}
+	/// <param name="x">Pin of the x-axis.</param>
+	/// <param name="x">Pin of the y-axis.</param>
+	/// <param name="btn">Pin of the stick's button.</param>
 	inline Joystick(const byte x, const byte y, const byte btn) :
 		_x(x), _y(y), _btn(btn), _latched(false) {}
 
+	/// <summary>
+	/// Initializes the connection to the joysick.
+	/// </summary>
+	/// <param name="deadzone">Only start reading movement from the stick after the axis has passed this value.</param>
 	inline void begin(const precision_t deadzone = 0.1);
 
+	/// <summary>
+	/// Reads whether or not the joystick's button is pressed.
+	/// </summary>
+	/// <param name="latch">Whether or not to suppress any reading of the button after this call.</param>
 	inline bool pressed(bool latch = false);
+	/// <summary>
+	/// Reads the current position (-1 to 1) of the stick on the x-axis.
+	/// </summary>
 	inline precision_t x();
+	/// <summary>
+	/// Reads the current position (-1 to 1) of the stick on the y-axis.
+	/// </summary>
 	inline precision_t y();
+	/// <summary>
+	/// Reads how far the stick is away from the origin on a 0 to 1 value.
+	/// </summary>
 	inline precision_t linear();
+	/// <summary>
+	/// Reads how far the stick is away from the origin.
+	/// </summary>
 	inline precision_t magnitude();
+	/// <summary>
+	/// Reads the direction (0 to 360 degrees) the stick is currently pointing.
+	/// </summary>
 	inline precision_t angle();
 
 protected:
 
+	/// <summary>
+	/// Reads and maps a channel to a -1 to 1 value.
+	/// </summary>
 	inline precision_t _axis(const byte channel);
 
 	byte _x, _y, _btn;
